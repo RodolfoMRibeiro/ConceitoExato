@@ -1,6 +1,7 @@
 package db
 
 import (
+	"conceitoExato/db/model"
 	"conceitoExato/env"
 	"fmt"
 	"log"
@@ -43,4 +44,9 @@ func createDatabaseStringConfig() string {
 }
 
 func loadMigrations(db *gorm.DB) {
+	db.AutoMigrate(&model.Goal{})
+	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Course{})
+	db.AutoMigrate(&model.Module{})
+	db.AutoMigrate(&model.Card{})
 }

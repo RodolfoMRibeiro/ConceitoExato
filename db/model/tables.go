@@ -1,10 +1,15 @@
 package model
 
-import "conceitoExato/library"
+import (
+	"conceitoExato/library"
+
+	"gorm.io/gorm"
+)
 
 type Goal struct {
-	Id   string `gorm:"id; primaryKey"`
-	Name string
+	gorm.Model
+	Users []User `gorm:"foreignKey:goal_id"`
+	Name  string `gorm:"column:name"`
 }
 
 func (Goal) TableName() string {
@@ -12,12 +17,13 @@ func (Goal) TableName() string {
 }
 
 type User struct {
-	Id       int  `gorm:"id; primaryKey"`
-	Goal     Goal `gorm:"foreignKey:Id"`
-	Email    string
-	Password string
-	Login    string
-	Fullname string
+	gorm.Model
+	GoalId   uint      `gorm:"column:goal_id"`
+	Email    string    `gorm:"column:email"`
+	Password string    `gorm:"column:password"`
+	Login    string    `gorm:"column:login"`
+	Fullname string    `gorm:"column:fullname"`
+	Courses  []*Course `gorm:"many2many:user_course;"`
 }
 
 func (User) TableName() string {
@@ -25,31 +31,25 @@ func (User) TableName() string {
 }
 
 type Course struct {
-	Id            int `gorm:"id; primaryKey"`
-	Name          string
-	Description   string
-	ModulesAmount int
+	gorm.Model
+	Name          string   `gorm:"column:name"`
+	Description   string   `gorm:"column:description"`
+	ModulesAmount uint     `gorm:"column:modules_amount"`
+	Modules       []Module `gorm:"foreignKey:course_id"`
+	Users         []*User  `gorm:"many2many:user_course;"`
 }
 
 func (Course) TableName() string {
 	return library.TB_COURSE
 }
 
-type CourseInProgress struct {
-	Courses []Course
-	Users   []User
-}
-
-func (CourseInProgress) TableName() string {
-	return library.TB_COURSE_IN_PROGRESS
-}
-
 type Module struct {
-	Id          int    `gorm:"id; primaryKey"`
-	CourseId    Course `gorm:"foreignKey:Id"`
-	CardsAmount int
-	Name        string
-	Description string
+	gorm.Model
+	CourseId    uint   `gorm:"column:course_id"`
+	CardsAmount uint   `gorm:"column:cards_amount"`
+	Name        string `gorm:"column:name"`
+	Description string `gorm:"column:description"`
+	Cards       []Card `gorm:"foreignKey:module_id"`
 }
 
 func (Module) TableName() string {
@@ -57,11 +57,11 @@ func (Module) TableName() string {
 }
 
 type Card struct {
-	Id       int    `gorm:"id; primaryKey"`
-	ModuleId Module `gorm:"foreignKey:Id"`
-	Name     string
-	Content  string
-	Kind     string
+	gorm.Model
+	ModuleId uint   `gorm:"column:module_id"`
+	Name     string `gorm:"column:name"`
+	Content  string `gorm:"column:content"`
+	Kind     string `gorm:"column:kind"`
 }
 
 func (Card) TableName() string {

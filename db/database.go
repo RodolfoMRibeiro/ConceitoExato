@@ -7,20 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type Mysql struct {
+type mysqlDb struct {
 	db            *gorm.DB
 	configuration string
 }
 
-func NewMysql(config string) *Mysql {
-	mysql := &Mysql{
+func NewMysql(config string) *mysqlDb {
+	mysql := &mysqlDb{
 		db:            &gorm.DB{},
 		configuration: config,
 	}
 	return mysql
 }
 
-func (m *Mysql) connect() error {
+func (m *mysqlDb) connect() error {
 	var err error
 	m.db, err = gorm.Open(mysql.Open(m.configuration), &gorm.Config{})
 
