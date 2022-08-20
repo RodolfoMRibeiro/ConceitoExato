@@ -6,12 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Server struct {
+type server struct {
 	host, port   string
 	serverEngine *gin.Engine
 }
 
-func CreateServer() *Server {
+func CreateServer() *server {
 	server := NewServer()
 
 	server.SetPort(env.Server.PORT)
@@ -19,8 +19,8 @@ func CreateServer() *Server {
 	return server
 }
 
-func NewServer() *Server {
-	newServer := &Server{
+func NewServer() *server {
+	newServer := &server{
 		host:         "",
 		port:         "",
 		serverEngine: gin.Default(),
@@ -28,14 +28,14 @@ func NewServer() *Server {
 	return newServer
 }
 
-func (s Server) GetServerEngine() *gin.Engine {
+func (s server) GetServerEngine() *gin.Engine {
 	return s.serverEngine
 }
 
-func (s *Server) SetPort(port string) {
+func (s *server) SetPort(port string) {
 	s.port = port
 }
 
-func (s *Server) SetHost(host string) {
+func (s *server) SetHost(host string) {
 	s.host = host
 }
