@@ -1,9 +1,13 @@
-package routes
+package user
 
-import "github.com/gin-gonic/gin"
+import (
+	"conceitoExato/module/user/controller"
+
+	"github.com/gin-gonic/gin"
+)
 
 func AvaiableRoutes(users *gin.RouterGroup) {
-	// users.GET("/", controller.Find)
+	users.GET("/:login", controller.Find)
 	// users.POST("/", controller.Create)
 	// users.PATCH("/", controller.Update)
 	// users.DELETE("/", controller.Delete)

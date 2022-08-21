@@ -9,6 +9,7 @@ import (
 type IUserRepository interface {
 	FindUserByLogin(string) error
 	FindUser() error
+	GetUser() model.User
 }
 
 type userRepository struct {
