@@ -4,12 +4,14 @@ import (
 	"conceitoExato/db"
 	"conceitoExato/db/model"
 	"conceitoExato/util"
+	"encoding/json"
 )
 
 type IUserRepository interface {
 	FindUserByLogin(string) error
-	FindUser() error
+	CreateUser([]byte) error
 	GetUser() model.User
+	SetUser([]byte) error
 }
 
 type userRepository struct {
@@ -25,7 +27,7 @@ func NewUserRepository() IUserRepository {
 }
 
 func (repository *userRepository) FindUserByLogin(login string) error {
-	couldNotFindUserLogin := db.GetGormDB().Where("login = ?", login).First(repository.user).Error
+	couldNotFindUserLogin := db.GetGormDB().Where("login = ?", login).First(&repository.user).Error
 
 	if util.ContainsError(couldNotFindUserLogin) {
 		return couldNotFindUserLogin
@@ -34,11 +36,17 @@ func (repository *userRepository) FindUserByLogin(login string) error {
 	return nil
 }
 
-func (repository *userRepository) FindUser() error {
-	couldNotFindUser := db.GetGormDB().First(repository.user).Error
+func (repository *userRepository) CreateUser(jsonElement []byte) error {
+	couldNotUnmarshal := repository.SetUser(jsonElement)
 
-	if util.ContainsError(couldNotFindUser) {
-		return couldNotFindUser
+	if util.ContainsError(couldNotUnmarshal) {
+		return couldNotUnmarshal
+	}
+
+	couldNotCreateUser := db.GetGormDB().Create(&repository.user).Error
+
+	if util.ContainsError(couldNotCreateUser) {
+		return couldNotCreateUser
 	}
 
 	return nil
@@ -46,4 +54,14 @@ func (repository *userRepository) FindUser() error {
 
 func (repository userRepository) GetUser() model.User {
 	return repository.user
+}
+
+func (repository *userRepository) SetUser(jsonElement []byte) error {
+	couldNotUnmarshal := json.Unmarshal(jsonElement, &repository.user)
+
+	if util.ContainsError(couldNotUnmarshal) {
+		return couldNotUnmarshal
+	}
+
+	return nil
 }

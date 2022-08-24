@@ -3,7 +3,6 @@ package controller
 import (
 	"conceitoExato/module/user/repository"
 	"conceitoExato/util"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,11 +14,27 @@ func Find(ctx *gin.Context) {
 	couldNotFindUser := repo.FindUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotFindUser) {
-		errorMessage := fmt.Sprintf("%v: %v", couldNotFindUser, ctx.Param("login"))
-
-		ctx.JSON(http.StatusNotFound, errorMessage)
+		util.HttpNotFoundMessage(ctx, couldNotFindUser)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"User": repo.GetUser()})
+}
+
+func Create(ctx *gin.Context) {
+	repo := repository.NewUserRepository()
+
+	bodyRequest, unableToGetRawData := ctx.GetRawData()
+
+	if util.ContainsError(unableToGetRawData) {
+		util.HttpBadRequestMessage(ctx, unableToGetRawData)
+		return
+	}
+
+	couldNotCreateUser := repo.CreateUser(bodyRequest)
+
+	if util.ContainsError(couldNotCreateUser) {
+		util.HttpBadRequestMessage(ctx, couldNotCreateUser)
+		return
+	}
 }
