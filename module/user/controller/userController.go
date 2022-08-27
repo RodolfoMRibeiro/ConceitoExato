@@ -38,3 +38,16 @@ func Create(ctx *gin.Context) {
 		return
 	}
 }
+
+func Delete(ctx *gin.Context) {
+	repo := repository.NewUserRepository()
+
+	couldNotDeleteUser := repo.DeleteUserByLogin(ctx.Param("login"))
+
+	if util.ContainsError(couldNotDeleteUser) {
+		util.HttpNotFoundMessage(ctx, couldNotDeleteUser)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"User": repo.GetUser()})
+}
