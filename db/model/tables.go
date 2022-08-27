@@ -17,12 +17,12 @@ func (Goal) TableName() string {
 }
 
 type Course struct {
-	gorm.Model
 	Name          string   `gorm:"column:name"`
 	Description   string   `gorm:"column:description"`
 	ModulesAmount uint     `gorm:"column:modules_amount"`
 	Modules       []Module `gorm:"foreignKey:course_id"`
 	Users         []*User  `gorm:"many2many:user_course;"`
+	gorm.Model
 }
 
 func (Course) TableName() string {
@@ -30,12 +30,12 @@ func (Course) TableName() string {
 }
 
 type Module struct {
-	gorm.Model
 	CourseId    uint   `gorm:"column:course_id"`
 	CardsAmount uint   `gorm:"column:cards_amount"`
 	Name        string `gorm:"column:name"`
 	Description string `gorm:"column:description"`
 	Cards       []Card `gorm:"foreignKey:module_id"`
+	gorm.Model
 }
 
 func (Module) TableName() string {
@@ -43,11 +43,11 @@ func (Module) TableName() string {
 }
 
 type Card struct {
-	gorm.Model
 	ModuleId uint   `gorm:"column:module_id"`
 	Name     string `gorm:"column:name"`
 	Content  string `gorm:"column:content"`
 	Kind     string `gorm:"column:kind"`
+	gorm.Model
 }
 
 func (Card) TableName() string {

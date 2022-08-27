@@ -10,24 +10,24 @@ import (
 type IUserRepository interface {
 	FindUserByLogin(string) error
 	CreateUser([]byte) error
-	GetUser() model.User
+	GetUser() *model.User
 	SetUser([]byte) error
 }
 
 type userRepository struct {
-	user  model.User
-	users []model.User
+	user  *model.User
+	users *[]model.User
 }
 
 func NewUserRepository() IUserRepository {
 	return &userRepository{
-		user:  model.User{},
-		users: []model.User{},
+		user:  &model.User{},
+		users: &[]model.User{},
 	}
 }
 
 func (repository *userRepository) FindUserByLogin(login string) error {
-	couldNotFindUserLogin := db.GetGormDB().Where("login = ?", login).First(&repository.user).Error
+	couldNotFindUserLogin := db.GetGormDB().Where("login = ?", login).Find(repository.GetUser()).Error
 
 	if util.ContainsError(couldNotFindUserLogin) {
 		return couldNotFindUserLogin
@@ -52,7 +52,7 @@ func (repository *userRepository) CreateUser(jsonElement []byte) error {
 	return nil
 }
 
-func (repository userRepository) GetUser() model.User {
+func (repository userRepository) GetUser() *model.User {
 	return repository.user
 }
 

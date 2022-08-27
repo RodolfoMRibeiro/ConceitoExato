@@ -20,12 +20,14 @@ func StartDatabase() {
 	mysql := NewMysql(databaseConfiguration)
 
 	if err := mysql.connect(); err != nil {
-		log.Fatal(err)
+		log.Fatalf("Could not connect to database: %v", err)
 	}
 
 	loadMigrations(mysql.db)
 
 	db = mysql.db
+
+	fmt.Println("Connected to Database sucessfully")
 }
 
 func createDatabaseStringConfig() string {
