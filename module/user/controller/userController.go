@@ -2,6 +2,7 @@ package controller
 
 import (
 	"conceitoExato/module/user/repository"
+	"conceitoExato/module/user/service"
 	"conceitoExato/util"
 	"net/http"
 
@@ -22,32 +23,25 @@ func Find(ctx *gin.Context) {
 }
 
 func Create(ctx *gin.Context) {
-	repo := repository.NewUserRepository()
 
-	bodyRequest, unableToGetRawData := ctx.GetRawData()
+	couldNotCreateUserError := service.CreateUser(ctx)
 
-	if util.ContainsError(unableToGetRawData) {
-		util.HttpBadRequestMessage(ctx, unableToGetRawData)
+	if couldNotCreateUserError != nil {
+		util.HttpBadRequestMessage(ctx, couldNotCreateUserError)
 		return
 	}
 
-	couldNotCreateUser := repo.CreateUser(bodyRequest)
-
-	if util.ContainsError(couldNotCreateUser) {
-		util.HttpBadRequestMessage(ctx, couldNotCreateUser)
-		return
-	}
+	ctx.JSON(http.StatusCreated, "User created sucessfully")
 }
 
 func Delete(ctx *gin.Context) {
-	repo := repository.NewUserRepository()
 
-	couldNotDeleteUser := repo.DeleteUserByLogin(ctx.Param("login"))
+	createdUser, couldNotDeleteUserError := service.DeleteUser(ctx)
 
-	if util.ContainsError(couldNotDeleteUser) {
-		util.HttpNotFoundMessage(ctx, couldNotDeleteUser)
+	if util.ContainsError(couldNotDeleteUserError) {
+		util.HttpNotFoundMessage(ctx, couldNotDeleteUserError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"User": repo.GetUser()})
+	ctx.JSON(http.StatusOK, gin.H{"User": createdUser})
 }
