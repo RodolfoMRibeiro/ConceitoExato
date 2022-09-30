@@ -1,8 +1,8 @@
 package db
 
 import (
-	"conceitoExato/db/model"
-	"conceitoExato/env"
+	"conceitoExato/adapter/db/model"
+	"conceitoExato/adapter/env"
 	"fmt"
 	"log"
 

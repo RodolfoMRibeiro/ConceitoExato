@@ -1,11 +1,11 @@
 package main
 
 import (
-	"conceitoExato/db"
-	"conceitoExato/db/seed"
-	"conceitoExato/env"
-	"conceitoExato/router"
-	"conceitoExato/server"
+	"conceitoExato/adapter/db"
+	"conceitoExato/adapter/db/seed"
+	"conceitoExato/adapter/env"
+	"conceitoExato/adapter/router"
+	"conceitoExato/adapter/server"
 	"fmt"
 )
 

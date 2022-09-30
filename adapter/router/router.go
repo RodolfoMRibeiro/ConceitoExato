@@ -1,7 +1,7 @@
 package router
 
 import (
-	"conceitoExato/module/user"
+	"conceitoExato/core/user"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,15 +1,15 @@
 package service
 
 import (
-	"conceitoExato/db/model"
-	"conceitoExato/module/user/repository"
-	"conceitoExato/util"
+	"conceitoExato/adapter/db/model"
+	"conceitoExato/common/util"
+	"conceitoExato/core/user/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(ctx *gin.Context) error {
-	repo := repository.NewUserRepository()
+	userRepository := repository.NewUserRepository()
 
 	bodyRequest, unableToGetRawData := ctx.GetRawData()
 
@@ -17,7 +17,7 @@ func CreateUser(ctx *gin.Context) error {
 		return unableToGetRawData
 	}
 
-	couldNotCreateUser := repo.CreateUser(bodyRequest)
+	couldNotCreateUser := userRepository.CreateUser(bodyRequest)
 
 	if util.ContainsError(couldNotCreateUser) {
 		return couldNotCreateUser
@@ -27,25 +27,25 @@ func CreateUser(ctx *gin.Context) error {
 }
 
 func FindUser(ctx *gin.Context) (*model.User, error) {
-	repo := repository.NewUserRepository()
+	userRepository := repository.NewUserRepository()
 
-	couldNotFindUser := repo.FindUserByLogin(ctx.Param("login"))
+	couldNotFindUser := userRepository.FindUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotFindUser) {
 		return &model.User{}, nil
 	}
 
-	return repo.GetUser(), nil
+	return userRepository.GetUser(), nil
 }
 
 func DeleteUser(ctx *gin.Context) (*model.User, error) {
-	repo := repository.NewUserRepository()
+	userRepository := repository.NewUserRepository()
 
-	couldNotDeleteUser := repo.DeleteUserByLogin(ctx.Param("login"))
+	couldNotDeleteUser := userRepository.DeleteUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotDeleteUser) {
 		return &model.User{}, couldNotDeleteUser
 	}
 
-	return repo.GetUser(), nil
+	return userRepository.GetUser(), nil
 }

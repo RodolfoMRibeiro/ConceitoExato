@@ -1,7 +1,7 @@
 package env
 
 import (
-	"conceitoExato/util"
+	"conceitoExato/common/util"
 	"encoding/json"
 	"os"
 	"reflect"

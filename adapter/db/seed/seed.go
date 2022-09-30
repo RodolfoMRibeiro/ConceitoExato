@@ -1,9 +1,9 @@
 package seed
 
 import (
-	"conceitoExato/db"
-	"conceitoExato/db/model"
-	"conceitoExato/library"
+	"conceitoExato/adapter/db"
+	"conceitoExato/adapter/db/model"
+	"conceitoExato/common/library"
 
 	"gorm.io/gorm"
 )

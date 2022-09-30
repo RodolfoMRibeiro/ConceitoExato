@@ -1,7 +1,7 @@
 package server
 
 import (
-	"conceitoExato/env"
+	"conceitoExato/adapter/env"
 
 	"github.com/gin-gonic/gin"
 )

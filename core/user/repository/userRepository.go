@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"conceitoExato/db"
-	"conceitoExato/db/model"
-	"conceitoExato/util"
+	"conceitoExato/adapter/db"
+	"conceitoExato/adapter/db/model"
+	"conceitoExato/common/util"
 	"encoding/json"
 )
 

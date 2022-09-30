@@ -1,7 +1,7 @@
 package model
 
 import (
-	"conceitoExato/library"
+	"conceitoExato/common/library"
 
 	"gorm.io/gorm"
 )
