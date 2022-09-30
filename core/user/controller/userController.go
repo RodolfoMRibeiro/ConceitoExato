@@ -2,7 +2,7 @@ package controller
 
 import (
 	"conceitoExato/common/util"
-	"conceitoExato/module/user/service"
+	"conceitoExato/core/user/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,6 @@ func Create(ctx *gin.Context) {
 }
 
 func Delete(ctx *gin.Context) {
-
 	createdUser, couldNotDeleteUserError := service.DeleteUser(ctx)
 
 	if util.ContainsError(couldNotDeleteUserError) {
@@ -40,4 +39,16 @@ func Delete(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"User": createdUser})
+}
+
+func ValidateLogin(ctx *gin.Context) {
+	validatedLogin, couldNotValidateUserLogin := service.ValidateUserLogin(ctx)
+
+	if util.ContainsError(couldNotValidateUserLogin) {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": couldNotValidateUserLogin,
+			"accepted_login": validatedLogin})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"error": nil, "accepted_login": validatedLogin})
 }

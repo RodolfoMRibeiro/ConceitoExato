@@ -4,13 +4,13 @@ import (
 	"conceitoExato/adapter/db/model"
 	"conceitoExato/common/util"
 	"conceitoExato/core/user/repository"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(ctx *gin.Context) error {
 	userRepository := repository.NewUserRepository()
-
 	bodyRequest, unableToGetRawData := ctx.GetRawData()
 
 	if util.ContainsError(unableToGetRawData) {
@@ -28,7 +28,6 @@ func CreateUser(ctx *gin.Context) error {
 
 func FindUser(ctx *gin.Context) (*model.User, error) {
 	userRepository := repository.NewUserRepository()
-
 	couldNotFindUser := userRepository.FindUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotFindUser) {
@@ -40,7 +39,6 @@ func FindUser(ctx *gin.Context) (*model.User, error) {
 
 func DeleteUser(ctx *gin.Context) (*model.User, error) {
 	userRepository := repository.NewUserRepository()
-
 	couldNotDeleteUser := userRepository.DeleteUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotDeleteUser) {
@@ -48,4 +46,26 @@ func DeleteUser(ctx *gin.Context) (*model.User, error) {
 	}
 
 	return userRepository.GetUser(), nil
+}
+
+func ValidateUserLogin(ctx *gin.Context) (bool, error) {
+	userRepository := repository.NewUserRepository()
+	requestUser := model.User{}
+
+	if unableToBindJson := ctx.BindJSON(&requestUser.Model); util.ContainsError(unableToBindJson) {
+		return false, unableToBindJson
+	}
+
+	couldNotFindUser := userRepository.FindUserByLogin(ctx.Param("login"))
+
+	if util.ContainsError(couldNotFindUser) {
+		return false, couldNotFindUser
+	}
+
+	if util.IsEqual(requestUser.Login, userRepository.GetUser().Login) &&
+		util.IsEqual(requestUser.Password, userRepository.GetUser().Password) {
+		return true, nil
+	}
+
+	return false, errors.New("user is not the same")
 }

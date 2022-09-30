@@ -1,7 +1,7 @@
 package user
 
 import (
-	"conceitoExato/module/user/controller"
+	"conceitoExato/core/user/controller"
 
 	"github.com/gin-gonic/gin"
 )

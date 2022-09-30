@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,4 +28,15 @@ func HttpNotFoundMessage(ctx *gin.Context, errElement error) {
 	errorMessage := fmt.Sprintf("%v", errElement)
 
 	ctx.JSON(http.StatusNotFound, errorMessage)
+}
+
+func IsEqual(firstElement interface{}, secondElement interface{}) bool {
+	firstElementType := reflect.ValueOf(firstElement).Kind()
+	secondElementType := reflect.ValueOf(secondElement).Kind()
+
+	if firstElementType != secondElementType {
+		return false
+	}
+
+	return firstElement == secondElement
 }
