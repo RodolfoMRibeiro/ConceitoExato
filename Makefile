@@ -3,6 +3,10 @@ COLOR_GREEN="\033[32m"
 COLOR_BLUE="\033[36m"
 COLOR_WHITE="\033[37m"
 
+run:
+	@echo ${COLOR_YELLOW}Running Application...${COLOR_WHITE}
+	@go run main.go
+
 install:
 	@echo ${COLOR_YELLOW}Running Tidy...${COLOR_WHITE}
 	@go mod tidy

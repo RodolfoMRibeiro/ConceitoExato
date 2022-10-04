@@ -2,6 +2,7 @@ package model
 
 import (
 	"conceitoExato/common/library"
+	"reflect"
 
 	"gorm.io/gorm"
 )
@@ -21,4 +22,8 @@ type User struct {
 
 func (User) TableName() string {
 	return library.TB_USER
+}
+
+func (user User) IsEmpty() bool {
+	return reflect.DeepEqual(user, User{})
 }
