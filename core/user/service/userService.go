@@ -5,7 +5,6 @@ import (
 	"conceitoExato/common/util"
 	"conceitoExato/core/user/repository"
 	"errors"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,13 +52,12 @@ func ValidateUserLogin(ctx *gin.Context) (bool, error) {
 	userRepository := repository.NewUserRepository()
 	requestUser := model.User{}
 
-	if unableToBindJson := ctx.BindJSON(&requestUser.Model); util.ContainsError(unableToBindJson) {
+	if unableToBindJson := ctx.BindJSON(&requestUser); util.ContainsError(unableToBindJson) {
 		return false, unableToBindJson
 	}
 
 	couldNotFindUser := userRepository.FindUserByLogin(requestUser.Login)
-	fmt.Println(userRepository.GetUser())
-	fmt.Println(requestUser)
+
 	if util.ContainsError(couldNotFindUser) || userRepository.GetUser().IsEmpty() {
 		return false, errors.New("user could not be found")
 	}
