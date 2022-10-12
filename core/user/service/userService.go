@@ -2,8 +2,10 @@ package service
 
 import (
 	"conceitoExato/adapter/db/model"
+	"conceitoExato/adapter/middleware"
 	"conceitoExato/common/util"
 	"conceitoExato/core/user/repository"
+	"encoding/json"
 	"errors"
 
 	"github.com/gin-gonic/gin"
@@ -11,13 +13,26 @@ import (
 
 func CreateUser(ctx *gin.Context) error {
 	userRepository := repository.NewUserRepository()
-	bodyRequest, unableToGetRawData := ctx.GetRawData()
+	requestUser := model.User{}
 
-	if util.ContainsError(unableToGetRawData) {
-		return unableToGetRawData
+	if unableToBindJson := ctx.BindJSON(&requestUser); util.ContainsError(unableToBindJson) {
+		return unableToBindJson
 	}
 
-	couldNotCreateUser := userRepository.CreateUser(bodyRequest)
+	hashedPassword, unableToHashPassword := middleware.HashPassword(requestUser.Password)
+
+	if util.ContainsError(unableToHashPassword) {
+		return unableToHashPassword
+	}
+
+	requestUser.Password = hashedPassword
+	bodyRequestInBytes, couldNotUnmarshalStruct := json.Marshal(requestUser)
+
+	if util.ContainsError(couldNotUnmarshalStruct) {
+		return couldNotUnmarshalStruct
+	}
+
+	couldNotCreateUser := userRepository.CreateUser(bodyRequestInBytes)
 
 	if util.ContainsError(couldNotCreateUser) {
 		return couldNotCreateUser
@@ -63,7 +78,7 @@ func ValidateUserLogin(ctx *gin.Context) (bool, error) {
 	}
 
 	if util.IsEqual(requestUser.Login, userRepository.GetUser().Login) &&
-		util.IsEqual(requestUser.Password, userRepository.GetUser().Password) {
+		middleware.CheckPasswordHash(requestUser.Password, userRepository.GetUser().Password) {
 		return true, nil
 	}
 
