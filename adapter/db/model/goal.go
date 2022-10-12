@@ -8,8 +8,8 @@ import (
 
 type Goal struct {
 	gorm.Model
-	Users []User `gorm:"foreignKey:goal_id"`
-	Name  string `gorm:"column:name"`
+	Users []User `gorm:"foreignKey:goal_id"  json:"users"`
+	Name  string `gorm:"column:name"         json:"name"`
 }
 
 func (Goal) TableName() string {

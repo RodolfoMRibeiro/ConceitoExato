@@ -7,11 +7,11 @@ import (
 )
 
 type Course struct {
-	Name          string   `gorm:"column:name"`
-	Description   string   `gorm:"column:description"`
-	ModulesAmount uint     `gorm:"column:modules_amount"`
-	Modules       []Module `gorm:"foreignKey:course_id"`
-	Users         []*User  `gorm:"many2many:user_course;"`
+	Name          string   `gorm:"column:name"             json:"name"`
+	Description   string   `gorm:"column:description"      json:"description"`
+	ModulesAmount uint     `gorm:"column:modules_amount"   json:"modules_amount"`
+	Modules       []Module `gorm:"foreignKey:course_id"    json:"modules"`
+	Users         []*User  `gorm:"many2many:user_course"   json:"users"`
 	gorm.Model
 }
 

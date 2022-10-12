@@ -28,7 +28,10 @@ func NewUserRepository() IUserRepository {
 }
 
 func (repository *userRepository) FindUserByLogin(login string) error {
-	couldNotFindUserLogin := db.GetGormDB().Where("login = ?", login).Find(repository.user).Error
+	couldNotFindUserLogin := db.GetGormDB().
+		Where("login = ?", login).
+		Find(repository.user).
+		Error
 
 	if util.ContainsError(couldNotFindUserLogin) {
 		return couldNotFindUserLogin
@@ -38,7 +41,10 @@ func (repository *userRepository) FindUserByLogin(login string) error {
 }
 
 func (repository *userRepository) DeleteUserByLogin(login string) error {
-	couldNotDeleteUser := db.GetGormDB().Where("login = ?", login).Delete(repository.user).Error
+	couldNotDeleteUser := db.GetGormDB().
+		Where("login = ?", login).
+		Delete(repository.user).
+		Error
 
 	if util.ContainsError(couldNotDeleteUser) {
 		return couldNotDeleteUser

@@ -7,10 +7,10 @@ import (
 )
 
 type Card struct {
-	ModuleId uint   `gorm:"column:module_id"`
-	Name     string `gorm:"column:name"`
-	Content  string `gorm:"column:content"`
-	Kind     string `gorm:"column:kind"`
+	ModuleId uint   `gorm:"column:module_id"   json:"module_id"`
+	Name     string `gorm:"column:name"        json:"name"`
+	Content  string `gorm:"column:content"     json:"content"`
+	Kind     string `gorm:"column:kind"        json:"kind"`
 	gorm.Model
 }
 
