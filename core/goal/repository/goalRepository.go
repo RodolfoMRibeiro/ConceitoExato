@@ -8,45 +8,45 @@ import (
 )
 
 type IGoalRepository interface {
-	GetGoalById(goalId string) error
+	GetGoalByName(string) (model.Goal, error)
 	GetAllGoals() ([]model.Goal, error)
 }
 
 type goalRepository struct {
-	user  *model.Goal
-	users *[]model.Goal
+	goal  *model.Goal
+	goals *[]model.Goal
 }
 
 func NewGoalRepository() IGoalRepository {
 	return &goalRepository{
-		user:  &model.Goal{},
-		users: &[]model.Goal{},
+		goal:  &model.Goal{},
+		goals: &[]model.Goal{},
 	}
 }
 
-func (repository goalRepository) GetGoalById(goalId string) error {
+func (repository goalRepository) GetGoalByName(goalName string) (model.Goal, error) {
 	couldNotFindGoalById := db.GetGormDB().
 		Table(library.TB_GOAL).
-		Where("id = ?", goalId).
-		First(repository.user).
+		Where("name = ?", goalName).
+		First(repository.goal).
 		Error
 
 	if util.ContainsError(couldNotFindGoalById) {
-		return couldNotFindGoalById
+		return model.Goal{}, couldNotFindGoalById
 	}
 
-	return nil
+	return *repository.goal, nil
 }
 
 func (repository goalRepository) GetAllGoals() ([]model.Goal, error) {
 	couldNotFindGoals := db.GetGormDB().
 		Table(library.TB_GOAL).
-		Find(repository.users).
+		Find(repository.goals).
 		Error
 
 	if util.ContainsError(couldNotFindGoals) {
 		return []model.Goal{}, couldNotFindGoals
 	}
 
-	return *repository.users, nil
+	return *repository.goals, nil
 }

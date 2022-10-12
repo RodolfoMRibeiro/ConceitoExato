@@ -10,11 +10,22 @@ import (
 
 func GetAllGoals(ctx *gin.Context) ([]model.Goal, error) {
 	goalRepository := repository.NewGoalRepository()
-	goals, couldNotGetAllGoals := goalRepository.GetAllGoals()
+	responseGoals, couldNotGetAllGoals := goalRepository.GetAllGoals()
 
 	if util.ContainsError(couldNotGetAllGoals) {
-		return []model.Goal{}, nil
+		return []model.Goal{}, couldNotGetAllGoals
 	}
 
-	return goals, nil
+	return responseGoals, nil
+}
+
+func GetGoalByName(ctx *gin.Context) (model.Goal, error) {
+	goalRepository := repository.NewGoalRepository()
+	responseGoal, couldNotGetGoalByName := goalRepository.GetGoalByName(ctx.Param("name"))
+
+	if util.ContainsError(couldNotGetGoalByName) {
+		return model.Goal{}, couldNotGetGoalByName
+	}
+
+	return responseGoal, nil
 }

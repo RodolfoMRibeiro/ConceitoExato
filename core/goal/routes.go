@@ -7,5 +7,6 @@ import (
 )
 
 func AvaiableRoutes(goal *gin.RouterGroup) {
-	goal.GET("/goal", controller.GetAllGoals)
+	goal.GET("/", controller.GetAllGoals)
+	goal.GET("/:name", controller.GetGoalByName)
 }
