@@ -3,6 +3,7 @@ package env
 var (
 	Mysql  MysqlConfig
 	Server ServerConfig
+	Secret SecretKey
 )
 
 type MysqlConfig struct {
@@ -19,7 +20,12 @@ type ServerConfig struct {
 	HOST string `env:"SERVER_HOST"`
 }
 
+type SecretKey struct {
+	SECRET_KEY string `env:"SECRET_KEY"`
+}
+
 func Load() {
 	loadStructWithEnvVars(&Mysql)
 	loadStructWithEnvVars(&Server)
+	loadStructWithEnvVars(&Secret)
 }

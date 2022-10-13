@@ -40,3 +40,21 @@ func IsEqual(firstElement interface{}, secondElement interface{}) bool {
 
 	return firstElement == secondElement
 }
+
+func HttpNoTokenFound(ctx *gin.Context) {
+	errorMessage := fmt.Sprintf("%v", "No Token Found")
+
+	ctx.JSON(http.StatusNotFound, errorMessage)
+}
+
+func HttpTokenHasExpired(ctx *gin.Context) {
+	errorMessage := fmt.Sprintf("%v", "Your Token has been expired")
+
+	ctx.JSON(http.StatusNotFound, errorMessage)
+}
+
+func HttpTokenNotAuthorized(ctx *gin.Context) {
+	errorMessage := fmt.Sprintf("%v", "Your Token is not authorized")
+
+	ctx.JSON(http.StatusNotFound, errorMessage)
+}
