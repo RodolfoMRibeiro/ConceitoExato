@@ -1,19 +1,18 @@
 package main
 
 import (
-	"conceitoExato/db"
-	"conceitoExato/db/seed"
-	"conceitoExato/env"
-	"conceitoExato/router"
-	"conceitoExato/server"
-	"fmt"
+	"conceitoExato/adapter/db"
+	"conceitoExato/adapter/db/seed"
+	"conceitoExato/adapter/env"
+	"conceitoExato/adapter/router"
+	"conceitoExato/adapter/server"
 )
 
 func main() {
 	env.Load()
 	db.StartDatabase()
 	seed.SeedDatabase()
-	currentServer := server.CreateServer()
-	router.Avaible(currentServer.GetServerEngine())
-	currentServer.GetServerEngine().Run(fmt.Sprintf("%s:%s", env.Server.HOST, env.Server.PORT))
+	servidor := server.CreateServer()
+	router.Avaible(servidor.GetServerEngine())
+	servidor.Run()
 }
