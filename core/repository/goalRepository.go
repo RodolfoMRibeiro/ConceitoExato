@@ -5,19 +5,15 @@ import (
 	"conceitoExato/adapter/db/model"
 	"conceitoExato/common/library"
 	"conceitoExato/common/util"
+	"conceitoExato/core/interfaces"
 )
-
-type IGoalRepository interface {
-	GetGoalByName(string) (model.Goal, error)
-	GetAllGoals() ([]model.Goal, error)
-}
 
 type goalRepository struct {
 	goal  *model.Goal
 	goals *[]model.Goal
 }
 
-func NewGoalRepository() IGoalRepository {
+func NewGoalRepository() interfaces.IGoalRepository {
 	return &goalRepository{
 		goal:  &model.Goal{},
 		goals: &[]model.Goal{},

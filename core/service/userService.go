@@ -4,11 +4,13 @@ import (
 	"conceitoExato/adapter/db/model"
 	"conceitoExato/adapter/middleware"
 	"conceitoExato/common/util"
-	"conceitoExato/core/user/repository"
+	dto "conceitoExato/core/domain"
+	"conceitoExato/core/repository"
 	"encoding/json"
 	"errors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 )
 
 func CreateUser(ctx *gin.Context) error {
@@ -41,15 +43,20 @@ func CreateUser(ctx *gin.Context) error {
 	return nil
 }
 
-func FindUser(ctx *gin.Context) (*model.User, error) {
+func FindUser(ctx *gin.Context) (dto.UserDto, error) {
 	userRepository := repository.NewUserRepository()
 	couldNotFindUser := userRepository.FindUserByLogin(ctx.Param("login"))
 
 	if util.ContainsError(couldNotFindUser) {
-		return &model.User{}, nil
+		return dto.UserDto{}, nil
 	}
 
-	return userRepository.GetUser(), nil
+	userFromRepository := userRepository.GetUser()
+	dt := dto.UserDto{}
+
+	copier.Copy(&userFromRepository, &dt)
+
+	return dt, nil
 }
 
 func DeleteUser(ctx *gin.Context) (*model.User, error) {

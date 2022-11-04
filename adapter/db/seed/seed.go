@@ -10,7 +10,7 @@ import (
 
 func SeedDatabase() {
 	populateWithGoalData(db.GetGormDB())
-	// populateWithUserData(db.GetGormDB())
+	populateWithUserData(db.GetGormDB())
 }
 
 func populateWithGoalData(db *gorm.DB) {

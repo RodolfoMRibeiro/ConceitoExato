@@ -3,7 +3,7 @@ package service
 import (
 	"conceitoExato/adapter/db/model"
 	"conceitoExato/common/util"
-	"conceitoExato/core/goal/repository"
+	"conceitoExato/core/repository"
 
 	"github.com/gin-gonic/gin"
 )

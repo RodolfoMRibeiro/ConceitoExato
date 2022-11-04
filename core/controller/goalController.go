@@ -2,7 +2,7 @@ package controller
 
 import (
 	"conceitoExato/common/util"
-	"conceitoExato/core/goal/service"
+	"conceitoExato/core/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -1,12 +1,12 @@
-package goal
+package routes
 
 import (
-	"conceitoExato/core/goal/controller"
+	"conceitoExato/core/controller"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AvaiableRoutes(goal *gin.RouterGroup) {
+func GoalRoutes(goal *gin.RouterGroup) {
 	goal.GET("/", controller.GetAllGoals)
 	goal.GET("/:name", controller.GetGoalByName)
 }

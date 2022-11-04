@@ -17,7 +17,6 @@ func GenerateJWT(ctx *gin.Context) {
 
 	claims := token.Claims.(jwt.MapClaims)
 	claims["authorized"] = true
-	claims["user"] = ctx.Param("username")
 	claims["exp"] = time.Now().UTC().Add(10 * time.Minute).Unix()
 
 	tokenString, unableToGetSignedToken := token.SignedString(signedString)
