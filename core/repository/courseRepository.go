@@ -6,6 +6,7 @@ import (
 	"conceitoExato/common/library"
 	"conceitoExato/common/util"
 	"conceitoExato/core/interfaces"
+	"encoding/json"
 )
 
 type courseRepository struct {
@@ -31,4 +32,19 @@ func (repository *courseRepository) GetAllCourses() ([]model.Course, error) {
 	}
 
 	return repository.courses, nil
+}
+
+func (repository courseRepository) CreateCourse(bodyInBytes []byte) error {
+	json.Unmarshal(bodyInBytes, &repository.course)
+
+	couldNotCreateUser := db.GetGormDB().
+		Table(library.TB_COURSE).
+		Create(&repository.course).
+		Error
+
+	if util.ContainsError(couldNotCreateUser) {
+		return couldNotCreateUser
+	}
+
+	return nil
 }

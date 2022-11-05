@@ -52,7 +52,6 @@ func (repository *userRepository) DeleteUserByLogin(login string) error {
 
 func (repository *userRepository) CreateUser(jsonElement []byte) error {
 	couldNotUnmarshal := repository.SetUser(jsonElement)
-	repository.user.GoalId = 1
 
 	if util.ContainsError(couldNotUnmarshal) {
 		return couldNotUnmarshal

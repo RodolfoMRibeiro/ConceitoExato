@@ -1,4 +1,4 @@
-package dto
+package domain
 
 type UserDto struct {
 	Fullname string `json:"fullname"`

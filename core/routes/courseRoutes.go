@@ -9,4 +9,5 @@ import (
 
 func CourseRoutes(course *gin.RouterGroup) {
 	course.GET("/allCourses", middleware.IsAuthorized(controller.GetAllCourses))
+	course.POST("createCourse", middleware.IsAuthorized(controller.CreateCourse))
 }
