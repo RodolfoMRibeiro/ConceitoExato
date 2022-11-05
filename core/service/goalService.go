@@ -1,31 +1,38 @@
 package service
 
 import (
-	"conceitoExato/adapter/db/model"
 	"conceitoExato/common/util"
+	dto "conceitoExato/core/domain"
 	"conceitoExato/core/repository"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 )
 
-func GetAllGoals(ctx *gin.Context) ([]model.Goal, error) {
+func GetAllGoals(ctx *gin.Context) ([]dto.GoalDto, error) {
 	goalRepository := repository.NewGoalRepository()
 	responseGoals, couldNotGetAllGoals := goalRepository.GetAllGoals()
 
 	if util.ContainsError(couldNotGetAllGoals) {
-		return []model.Goal{}, couldNotGetAllGoals
+		return []dto.GoalDto{}, couldNotGetAllGoals
 	}
 
-	return responseGoals, nil
+	response := []dto.GoalDto{}
+	copier.Copy(&response, responseGoals)
+
+	return response, nil
 }
 
-func GetGoalByName(ctx *gin.Context) (model.Goal, error) {
+func GetGoalByName(ctx *gin.Context) (dto.GoalDto, error) {
 	goalRepository := repository.NewGoalRepository()
-	responseGoal, couldNotGetGoalByName := goalRepository.GetGoalByName(ctx.Param("name"))
+	goalFromDatabase, couldNotGetGoalByName := goalRepository.GetGoalByName(ctx.Param("name"))
 
 	if util.ContainsError(couldNotGetGoalByName) {
-		return model.Goal{}, couldNotGetGoalByName
+		return dto.GoalDto{}, couldNotGetGoalByName
 	}
 
-	return responseGoal, nil
+	response := dto.GoalDto{}
+	copier.Copy(&response, goalFromDatabase)
+
+	return response, nil
 }

@@ -3,24 +3,18 @@ package repository
 import (
 	"conceitoExato/adapter/db"
 	"conceitoExato/adapter/db/model"
+	"conceitoExato/adapter/middleware"
 	"conceitoExato/common/util"
+	"conceitoExato/core/interfaces"
 	"encoding/json"
 )
-
-type IUserRepository interface {
-	FindUserByLogin(string) error
-	CreateUser([]byte) error
-	DeleteUserByLogin(string) error
-	GetUser() *model.User
-	SetUser([]byte) error
-}
 
 type userRepository struct {
 	user  *model.User
 	users *[]model.User
 }
 
-func NewUserRepository() IUserRepository {
+func NewUserRepository() interfaces.IUserRepository {
 	return &userRepository{
 		user:  &model.User{},
 		users: &[]model.User{},
@@ -55,6 +49,7 @@ func (repository *userRepository) DeleteUserByLogin(login string) error {
 
 func (repository *userRepository) CreateUser(jsonElement []byte) error {
 	couldNotUnmarshal := repository.SetUser(jsonElement)
+	repository.user.GoalId = 1
 
 	if util.ContainsError(couldNotUnmarshal) {
 		return couldNotUnmarshal
@@ -67,6 +62,17 @@ func (repository *userRepository) CreateUser(jsonElement []byte) error {
 	}
 
 	return nil
+}
+
+func (repository *userRepository) IsValidateUser(login, hashedPassword string) bool {
+	repository.FindUserByLogin(login)
+
+	if util.IsEqual(login, repository.GetUser().Login) &&
+		middleware.CheckPasswordHash(hashedPassword, repository.GetUser().Password) {
+		return true
+	}
+
+	return false
 }
 
 func (repository userRepository) GetUser() *model.User {

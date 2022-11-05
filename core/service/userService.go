@@ -21,10 +21,10 @@ func CreateUser(ctx *gin.Context) error {
 		return unableToBindJson
 	}
 
-	hashedPassword, unableToHashPassword := middleware.HashPassword(requestUser.Password)
+	hashedPassword, hashPasswordError := middleware.HashPassword(requestUser.Password)
 
-	if util.ContainsError(unableToHashPassword) {
-		return unableToHashPassword
+	if util.ContainsError(hashPasswordError) {
+		return hashPasswordError
 	}
 
 	requestUser.Password = hashedPassword
@@ -52,11 +52,11 @@ func FindUser(ctx *gin.Context) (dto.UserDto, error) {
 	}
 
 	userFromRepository := userRepository.GetUser()
-	dt := dto.UserDto{}
+	userDto := dto.UserDto{}
 
-	copier.Copy(&userFromRepository, &dt)
+	copier.Copy(&userDto, userFromRepository)
 
-	return dt, nil
+	return userDto, nil
 }
 
 func DeleteUser(ctx *gin.Context) (*model.User, error) {
@@ -84,8 +84,7 @@ func ValidateUserLogin(ctx *gin.Context) (bool, error) {
 		return false, errors.New("user could not be found")
 	}
 
-	if util.IsEqual(requestUser.Login, userRepository.GetUser().Login) &&
-		middleware.CheckPasswordHash(requestUser.Password, userRepository.GetUser().Password) {
+	if userRepository.IsValidateUser(requestUser.Login, requestUser.Password) {
 		return true, nil
 	}
 
