@@ -8,12 +8,15 @@ import (
 
 func Avaible(r *gin.Engine) {
 
-	webSite := r.Group("/api")
+	apiV1 := r.Group("/api")
 	{
-		usersGroup := webSite.Group("/user")
+		usersGroup := apiV1.Group("/user")
 		routes.UserRoutes(usersGroup)
 
-		goalsGroup := webSite.Group("/goal")
+		goalsGroup := apiV1.Group("/goal")
 		routes.GoalRoutes(goalsGroup)
+
+		coursesGroup := apiV1.Group("/course")
+		routes.CourseRoutes(coursesGroup)
 	}
 }

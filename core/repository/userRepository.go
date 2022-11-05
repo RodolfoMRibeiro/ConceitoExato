@@ -4,6 +4,7 @@ import (
 	"conceitoExato/adapter/db"
 	"conceitoExato/adapter/db/model"
 	"conceitoExato/adapter/middleware"
+	"conceitoExato/common/library"
 	"conceitoExato/common/util"
 	"conceitoExato/core/interfaces"
 	"encoding/json"
@@ -23,6 +24,7 @@ func NewUserRepository() interfaces.IUserRepository {
 
 func (repository *userRepository) FindUserByLogin(login string) error {
 	couldNotFindUserLogin := db.GetGormDB().
+		Table(library.TB_USER).
 		Where("login = ?", login).
 		Find(repository.user).
 		Error
@@ -36,6 +38,7 @@ func (repository *userRepository) FindUserByLogin(login string) error {
 
 func (repository *userRepository) DeleteUserByLogin(login string) error {
 	couldNotDeleteUser := db.GetGormDB().
+		Table(library.TB_USER).
 		Where("login = ?", login).
 		Delete(repository.user).
 		Error
