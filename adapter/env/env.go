@@ -1,22 +1,17 @@
 package env
 
 var (
-	Mysql  MysqlConfig
-	Server ServerConfig
-	Secret SecretKey
+	Database DatabaseConfig
+	Server   ServerConfig
+	Secret   SecretKey
 )
 
-type MysqlConfig struct {
-	DB                 string `env:"MYSQL_DATABASE"`
-	PORT               string `env:"MYSQL_PORT" envDefault:"3306"`
-	HOST               string `env:"MYSQL_HOST"`
-	USER               string `env:"MYSQL_USER"`
-	PASSWORD           string `env:"MYSQL_PASSWORD"`
-	ADDITIONAL_CONFIGS string `env:"ADDITIONAL_CONFIGS"`
+type DatabaseConfig struct {
+	DATABASE_URL string `env:"DATABASE_URL"`
 }
 
 type ServerConfig struct {
-	PORT string `env:"SERVER_PORT"`
+	PORT string `env:"PORT"`
 	HOST string `env:"SERVER_HOST"`
 }
 
@@ -25,7 +20,7 @@ type SecretKey struct {
 }
 
 func Load() {
-	loadStructWithEnvVars(&Mysql)
+	loadStructWithEnvVars(&Database)
 	loadStructWithEnvVars(&Server)
 	loadStructWithEnvVars(&Secret)
 }

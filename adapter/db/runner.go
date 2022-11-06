@@ -16,33 +16,17 @@ func GetGormDB() *gorm.DB {
 }
 
 func StartDatabase() {
-	databaseConfiguration := createDatabaseStringConfig()
-	mysql := NewMysql(databaseConfiguration)
+	postgresDB := NewDatabase(env.Database.DATABASE_URL)
 
-	if err := mysql.connect(); err != nil {
+	if err := postgresDB.connect(); err != nil {
 		log.Fatalf("Could not connect to database: %v", err)
 	}
 
-	loadMigrations(mysql.db)
+	loadMigrations(postgresDB.db)
 
-	db = mysql.db
+	db = postgresDB.db
 
 	fmt.Println("Connected to Database sucessfully")
-}
-
-func createDatabaseStringConfig() string {
-	databaseStringConfig := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s%s",
-
-		env.Mysql.USER,
-		env.Mysql.PASSWORD,
-		env.Mysql.HOST,
-		env.Mysql.PORT,
-		env.Mysql.DB,
-		env.Mysql.ADDITIONAL_CONFIGS,
-	)
-
-	return databaseStringConfig
 }
 
 func loadMigrations(db *gorm.DB) {

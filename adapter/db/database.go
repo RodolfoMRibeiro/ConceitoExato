@@ -3,26 +3,26 @@ package db
 import (
 	"log"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type mysqlDb struct {
+type databaseHolder struct {
 	db            *gorm.DB
 	configuration string
 }
 
-func NewMysql(config string) *mysqlDb {
-	mysql := &mysqlDb{
+func NewDatabase(config string) *databaseHolder {
+	mysql := &databaseHolder{
 		db:            &gorm.DB{},
 		configuration: config,
 	}
 	return mysql
 }
 
-func (m *mysqlDb) connect() error {
+func (m *databaseHolder) connect() error {
 	var err error
-	m.db, err = gorm.Open(mysql.Open(m.configuration), &gorm.Config{})
+	m.db, err = gorm.Open(postgres.Open(m.configuration), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Error connecting to database")
