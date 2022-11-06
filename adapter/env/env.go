@@ -12,7 +12,7 @@ type DatabaseConfig struct {
 
 type ServerConfig struct {
 	PORT string `env:"PORT"`
-	HOST string `env:"SERVER_HOST"`
+	HOST string `env:"HOST"`
 }
 
 type SecretKey struct {

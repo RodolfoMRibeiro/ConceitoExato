@@ -1,15 +1,16 @@
 version: '3.4'
 services:
   db:
-    image: mysql:5.7
+    image: postgres:latest
     container_name: ${MYSQL_HOST}
     environment:
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_ROOT_PASSWORD: '${MYSQL_PASSWORD}'
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: 'root'
+      POSTGRES_DB: 'conceitoexato'
     ports:
-      - '${MYSQL_PORT}:${MYSQL_PORT}'
+      - '5432:5432'
     expose:
-      - '${MYSQL_PORT}'
+      - '5432'
 
   # app:
   #   build: .
