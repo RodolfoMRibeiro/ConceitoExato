@@ -18,5 +18,8 @@ func Avaible(r *gin.Engine) {
 
 		coursesGroup := apiV1.Group("/course")
 		routes.CourseRoutes(coursesGroup)
+
+		modulesGroup := apiV1.Group("/module")
+		routes.ModuleRoutes(modulesGroup)
 	}
 }

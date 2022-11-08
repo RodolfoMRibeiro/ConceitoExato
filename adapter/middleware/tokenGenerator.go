@@ -26,5 +26,5 @@ func GenerateJWT(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"Token": tokenString})
+	ctx.JSON(http.StatusOK, gin.H{"accessToken": tokenString})
 }
