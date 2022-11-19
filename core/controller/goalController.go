@@ -9,8 +9,6 @@ import (
 )
 
 func GetAllGoals(ctx *gin.Context) {
-	ctx.Header("Access-Control-Allow-Origin", "*")
-
 	responseGoals, couldNotGetAllGoals := service.GetAllGoals(ctx)
 
 	if util.ContainsError(couldNotGetAllGoals) {
@@ -22,8 +20,6 @@ func GetAllGoals(ctx *gin.Context) {
 }
 
 func GetGoalByName(ctx *gin.Context) {
-	ctx.Header("Access-Control-Allow-Origin", "*")
-
 	responseGoal, couldNotGetGoalByName := service.GetGoalByName(ctx)
 
 	if util.ContainsError(couldNotGetGoalByName) {

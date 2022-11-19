@@ -2,6 +2,7 @@ package server
 
 import (
 	"conceitoExato/adapter/env"
+	"conceitoExato/adapter/middleware"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,7 @@ type server struct {
 
 func CreateServer() IServer {
 	server := NewServer(env.Server.HOST, env.Server.PORT)
+	server.GetServerEngine().Use(middleware.CORSMiddleware())
 	return server
 }
 
@@ -26,7 +28,7 @@ func NewServer(host, port string) IServer {
 	newServer := &server{
 		host:         host,
 		port:         port,
-		serverEngine: gin.Default(),
+		serverEngine: gin.New(),
 	}
 	return newServer
 }

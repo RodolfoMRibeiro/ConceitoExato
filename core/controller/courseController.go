@@ -9,8 +9,6 @@ import (
 )
 
 func GetAllCourses(ctx *gin.Context) {
-	ctx.Header("Access-Control-Allow-Origin", "*")
-
 	courses, couldNotGetAllCourses := service.GetAllCourses(ctx)
 
 	if util.ContainsError(couldNotGetAllCourses) {
@@ -22,8 +20,6 @@ func GetAllCourses(ctx *gin.Context) {
 }
 
 func CreateCourse(ctx *gin.Context) {
-	ctx.Header("Access-Control-Allow-Origin", "*")
-
 	couldNotCreateCourse := service.CreateCourse(ctx)
 
 	if util.ContainsError(couldNotCreateCourse) {
