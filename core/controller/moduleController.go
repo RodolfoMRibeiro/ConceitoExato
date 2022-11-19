@@ -9,6 +9,8 @@ import (
 )
 
 func FindModuleByName(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+
 	module, couldNotGetModuleByName := service.FindByName(ctx)
 
 	if util.ContainsError(couldNotGetModuleByName) {

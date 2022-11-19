@@ -9,6 +9,8 @@ import (
 )
 
 func Find(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+
 	user, couldNotFindUser := service.FindUser(ctx)
 
 	if util.ContainsError(couldNotFindUser) {
@@ -20,6 +22,8 @@ func Find(ctx *gin.Context) {
 }
 
 func Create(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+
 	couldNotCreateUserError := service.CreateUser(ctx)
 
 	if couldNotCreateUserError != nil {
@@ -31,6 +35,8 @@ func Create(ctx *gin.Context) {
 }
 
 func Delete(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+
 	_, couldNotDeleteUserError := service.DeleteUser(ctx)
 
 	if util.ContainsError(couldNotDeleteUserError) {
@@ -42,6 +48,7 @@ func Delete(ctx *gin.Context) {
 }
 
 func ValidateLogin(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
 	validatedLogin, couldNotValidateUserLogin := service.ValidateUserLogin(ctx)
 
 	if util.ContainsError(couldNotValidateUserLogin) {
