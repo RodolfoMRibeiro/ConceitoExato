@@ -25,7 +25,7 @@ func NewUserRepository() interfaces.IUserRepository {
 func (repository *userRepository) FindUserByLogin(login string) error {
 	couldNotFindUserLogin := db.GetGormDB().
 		Table(library.TB_USER).
-		Where("login = ?", login).
+		Where("login ilike ?", "%"+login+"%").
 		Find(repository.user).
 		Error
 
